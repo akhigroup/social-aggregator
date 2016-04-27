@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.probableunivere</groupId>
-	<artifactId>imgurAggre</artifactId>
+	<artifactId>socialAggre</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>imgurAggre</name>
-	<description>Imgur API Aggregator</description>
+	<name>socialAggre</name>
+	<description>Simple Social API Aggregator</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
