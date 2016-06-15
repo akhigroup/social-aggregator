@@ -1,4 +1,4 @@
-package com.probableuniverse.domain.instagram;
+package com.probableuniverse.domain.instagram.users;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -9,6 +9,7 @@ public class User {
 	public String profilePicture;
 	public String fullName;
 	public String id;
+	public Counts counts;
 	
 	@JsonProperty("username")
 	public String getUserName() {
@@ -51,5 +52,12 @@ public class User {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	@JsonProperty("counts")
+	public Counts getCounts() {
+		return counts;
+	}
+	public void setCounts(Counts counts) {
+		this.counts = counts;
 	}
 }

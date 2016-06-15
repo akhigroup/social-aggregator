@@ -1,6 +1,7 @@
 package com.probableuniverse.domain.instagram;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.probableuniverse.domain.instagram.users.User;
 
 public class AccessToken {
 

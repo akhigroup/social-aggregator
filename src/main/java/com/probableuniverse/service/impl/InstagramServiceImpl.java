@@ -13,6 +13,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.probableuniverse.domain.instagram.AccessToken;
+import com.probableuniverse.domain.instagram.InstagramEnvelope;
 import com.probableuniverse.service.InstagramService;
 
 @Service
@@ -38,6 +39,10 @@ public class InstagramServiceImpl implements InstagramService{
 	@Value("${insta.oauth.request}")
 	private String instagramOauthRequest;
 	
+	@Autowired
+	@Value("${insta.api.users.self.uri}")
+	private String instagramUsersSelfRequest;
+	
 	public AccessToken getAccessToken(String code){
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -57,12 +62,34 @@ public class InstagramServiceImpl implements InstagramService{
 			ResponseEntity<AccessToken> response = restTemplate.exchange(instagramOauthRequest, HttpMethod.POST, requestEntity, AccessToken.class);
 			accessToken = response.getBody();
 			return accessToken;
-			
 		}catch(Exception e){
 			//add logger
 			System.out.println("theres an error, add a logger: " + e.getStackTrace());
 		}
 		return accessToken;
+	}
+	
+	public InstagramEnvelope getUsersSelf(String accessToken){
+		HttpHeaders requestHeaders = new HttpHeaders();
+		requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+		
+		MultiValueMap<String, String> vars = new LinkedMultiValueMap<String, String>();
+		vars.add("access_token", accessToken);
+		
+		HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(vars, requestHeaders);
+		
+		InstagramEnvelope instagramEnvelope = new InstagramEnvelope();
+		try{
+			RestTemplate restTemplate = new RestTemplate();
+			
+			ResponseEntity<InstagramEnvelope> response = restTemplate.exchange(instagramUsersSelfRequest, HttpMethod.GET, requestEntity, InstagramEnvelope.class);
+			instagramEnvelope = response.getBody();
+			return instagramEnvelope;
+		}catch(Exception e){
+			System.out.println("theres an error, add a logger: " + e.getStackTrace());
+		}
+		return instagramEnvelope;
+		
 	}
 	
 }

@@ -2,9 +2,11 @@ package com.probableuniverse.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.probableuniverse.domain.instagram.AccessToken;
+import com.probableuniverse.domain.instagram.InstagramEnvelope;
 import com.probableuniverse.service.InstagramService;
 
 @RestController
@@ -35,5 +37,11 @@ public class InstagramController {
 		return accessToken;
 	}
 	
+	@RequestMapping("/instagram/users-self")
+	public InstagramEnvelope usersSelf(
+			@RequestParam(value="access-token", required=true) String accessToken){
+		InstagramEnvelope instagramEnvelope = instagramService.getUsersSelf(accessToken);
+		return instagramEnvelope;
+	}
 	
 }
