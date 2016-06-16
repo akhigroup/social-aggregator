@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.probableuniverse.domain.instagram.AccessToken;
-import com.probableuniverse.domain.instagram.InstagramEnvelope;
+import com.probableuniverse.domain.instagram.users.UserEnvelope;
 import com.probableuniverse.service.InstagramService;
 
 @RestController
@@ -38,9 +38,9 @@ public class InstagramController {
 	}
 	
 	@RequestMapping("/instagram/users-self")
-	public InstagramEnvelope usersSelf(
+	public UserEnvelope usersSelf(
 			@RequestParam(value="access-token", required=true) String accessToken){
-		InstagramEnvelope instagramEnvelope = instagramService.getUsersSelf(accessToken);
+		UserEnvelope instagramEnvelope = instagramService.getUsersSelf(accessToken);
 		return instagramEnvelope;
 	}
 	

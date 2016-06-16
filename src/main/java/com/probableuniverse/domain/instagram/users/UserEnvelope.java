@@ -1,9 +1,10 @@
-package com.probableuniverse.domain.instagram;
+package com.probableuniverse.domain.instagram.users;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.probableuniverse.domain.instagram.users.User;
+import com.probableuniverse.domain.instagram.Meta;
+import com.probableuniverse.domain.instagram.Pagination;
 
-public class InstagramEnvelope {
+public class UserEnvelope {
 	public Meta meta;
 	public Pagination pagination;
 	public User user;
@@ -30,5 +31,4 @@ public class InstagramEnvelope {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
 }

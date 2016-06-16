@@ -1,10 +1,10 @@
 package com.probableuniverse.service;
 
 import com.probableuniverse.domain.instagram.AccessToken;
-import com.probableuniverse.domain.instagram.InstagramEnvelope;
+import com.probableuniverse.domain.instagram.users.UserEnvelope;
 
 public interface InstagramService {
 
 	public AccessToken getAccessToken(String code);
-	public InstagramEnvelope getUsersSelf(String accessToken);
+	public UserEnvelope getUsersSelf(String accessToken);
 }

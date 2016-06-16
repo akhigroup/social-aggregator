@@ -11,9 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.probableuniverse.domain.instagram.AccessToken;
-import com.probableuniverse.domain.instagram.InstagramEnvelope;
+import com.probableuniverse.domain.instagram.users.UserEnvelope;
 import com.probableuniverse.service.InstagramService;
 
 @Service
@@ -69,26 +70,25 @@ public class InstagramServiceImpl implements InstagramService{
 		return accessToken;
 	}
 	
-	public InstagramEnvelope getUsersSelf(String accessToken){
-		HttpHeaders requestHeaders = new HttpHeaders();
-		requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+	public UserEnvelope getUsersSelf(String accessToken){
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+		HttpEntity<?> entity = new HttpEntity<>(headers);
 		
-		MultiValueMap<String, String> vars = new LinkedMultiValueMap<String, String>();
-		vars.add("access_token", accessToken);
-		
-		HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(vars, requestHeaders);
-		
-		InstagramEnvelope instagramEnvelope = new InstagramEnvelope();
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(instagramUsersSelfRequest)
+		        .queryParam("access_token", accessToken);
+
+		UserEnvelope userEnvelope = new UserEnvelope();
 		try{
 			RestTemplate restTemplate = new RestTemplate();
 			
-			ResponseEntity<InstagramEnvelope> response = restTemplate.exchange(instagramUsersSelfRequest, HttpMethod.GET, requestEntity, InstagramEnvelope.class);
-			instagramEnvelope = response.getBody();
-			return instagramEnvelope;
+			HttpEntity<UserEnvelope> response = restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET, entity, UserEnvelope.class);
+			userEnvelope = response.getBody();
+			return userEnvelope;
 		}catch(Exception e){
 			System.out.println("theres an error, add a logger: " + e.getStackTrace());
 		}
-		return instagramEnvelope;
+		return userEnvelope;
 		
 	}
 	
