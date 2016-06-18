@@ -1,10 +1,14 @@
 package com.probableuniverse.domain.instagram;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Meta {
+	@JsonInclude(Include.NON_NULL)
 	public String errorType;
 	public String code;
+	@JsonInclude(Include.NON_NULL)
 	public String errorMessage;
 	
 	@JsonProperty("error_type")

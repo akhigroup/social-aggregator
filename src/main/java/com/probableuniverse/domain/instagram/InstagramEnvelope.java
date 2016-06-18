@@ -1,12 +1,13 @@
 package com.probableuniverse.domain.instagram;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.probableuniverse.domain.instagram.users.User;
 
 public class InstagramEnvelope {
 	public Meta meta;
+	@JsonInclude(Include.NON_NULL)
 	public Pagination pagination;
-	public User user;
 
 	@JsonProperty("meta")
 	public Meta getMeta() {
@@ -22,13 +23,6 @@ public class InstagramEnvelope {
 
 	public void setPagination(Pagination pagination) {
 		this.pagination = pagination;
-	}
-	@JsonProperty("data")
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
 	}
 	
 }

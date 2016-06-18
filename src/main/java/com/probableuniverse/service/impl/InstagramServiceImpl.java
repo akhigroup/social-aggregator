@@ -1,5 +1,8 @@
 package com.probableuniverse.service.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -13,6 +16,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.probableuniverse.common.RestfulCalls;
 import com.probableuniverse.domain.instagram.AccessToken;
 import com.probableuniverse.domain.instagram.users.UserEnvelope;
 import com.probableuniverse.service.InstagramService;
@@ -44,6 +48,13 @@ public class InstagramServiceImpl implements InstagramService{
 	@Value("${insta.api.users.self.uri}")
 	private String instagramUsersSelfRequest;
 	
+	@Autowired
+	@Value("${insta.api.users.uri}")
+	private String instagramUserByIdRequest;
+	
+	@Autowired
+	RestfulCalls restfulCalls;
+	
 	public AccessToken getAccessToken(String code){
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -70,7 +81,7 @@ public class InstagramServiceImpl implements InstagramService{
 		return accessToken;
 	}
 	
-	public UserEnvelope getUsersSelf(String accessToken){
+	public UserEnvelope getUserSelf(String accessToken){
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
 		HttpEntity<?> entity = new HttpEntity<>(headers);
@@ -90,6 +101,32 @@ public class InstagramServiceImpl implements InstagramService{
 		}
 		return userEnvelope;
 		
+	}
+
+	@Override
+	public UserEnvelope getUserById(String userId, String accessToken) {
+		Map<String, String> vars = new HashMap<String, String>();
+		vars.put("user-id", userId);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+		HttpEntity<?> entity = new HttpEntity<>(headers);
+		
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(instagramUserByIdRequest)
+		        .queryParam("access_token", accessToken);
+
+		UserEnvelope userEnvelope = new UserEnvelope();
+		try{
+			RestTemplate restTemplate = new RestTemplate();
+			
+			HttpEntity<UserEnvelope> response = restTemplate.exchange(builder.build().expand(vars).encode().toUri(), HttpMethod.GET, entity, UserEnvelope.class);
+			userEnvelope = response.getBody();
+			return userEnvelope;
+		}catch(Exception e){
+			System.out.println("theres an error, add a logger: " + e.getStackTrace());
+		}
+		
+		return userEnvelope;
 	}
 	
 }
