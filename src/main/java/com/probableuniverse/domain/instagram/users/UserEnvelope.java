@@ -13,4 +13,8 @@ public class UserEnvelope extends InstagramEnvelope {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	@Override
+	public String toString() {
+		return "UserEnvelope [user=" + user + "]";
+	}
 }
